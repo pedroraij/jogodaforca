@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<head>
+    
+	<title>Document</title>
+ <style>
+
+body{
+background-image: url("https://media.giphy.com/media/1xlq4gMqMP4FRptOuq/giphy.gif");
+}
+
+.topo {
+	
+	color: white;
+	height: 80px;
+	padding-top: 20px;
+	text-align: center;
+	font-size: 50px;
+	text-shadow: 2px 2px #0099CC;
+}
+
+.cabecalho {
+	
+	color: white;
+	height: 50px;
+	padding-top: 10px;
+	text-align: center;
+	font-size: 25px;
+	text-shadow: 2px 2px #0099CC;
+}
+
+.centro {
+	color: white;
+	text-align: center;
+	font-size: 20px;
+	padding-top: 10px;
+	padding-right:40%;
+	padding-bottom:30px;
+	padding-left: 40%;
+	text-shadow: 2px 2px #0099CC;
+}
+
+
+</style>
+
+</head>
+<body>
+	<div class="topo">JOGO DA FORCA</div>
+
+	<div class="cabecalho">Aperte alguma letra para adivinhar</div>
+	<div class="centro">
+	<div>Respostas incorretas: <div id="tentativaid"></div></div>
+	<div>Suas respostas:<span id="idletra"></span></div>
+	<div id="idresposta"></div>
+	</div>
+
+
+
+
+<script type="text/javascript">
+	var palavra = ["batata","limonada","tomate"];
+	var letra = 0;
+	function jogar(){
+		var tentativas = 9;
+		var limpar = document.getElementById("idresposta");
+		while(limpar.firstChild){
+    	limpar.removeChild(limpar.firstChild);
+		}
+
+		var limpar1 = document.getElementById("tentativaid");
+		while(limpar1.firstChild){
+    	limpar1.removeChild(limpar1.firstChild);
+		}
+
+		var limpar2 = document.getElementById("idletra");
+		while(limpar2.firstChild){
+    	limpar2.removeChild(limpar2.firstChild);
+		}
+
+		var resposta = palavra[letra];
+
+		var jogada = []
+
+		var erro = []
+
+		var acerto = [] 
+
+		var vetorletra = resposta.split("");
+
+		var aoduplicar = vetorletra.reduce(function(a,b){
+		    if (a.indexOf(b) < 0 ) a.push(b);
+		    return a;
+		  },[]);
+
+    	for (var i = 0; i < vetorletra.length; i++) {
+    	  var espaco = document.createElement("span");
+       	  espaco.classList.add(vetorletra[i]);
+    	  espaco.innerHTML = "_ ";
+    	  document.getElementById("idresposta").append(espaco);
+    	  };
+		
+		function certo() { rd
+			letra = letra+1;
+			tentativas = tentativas-1;
+			alert("Boa, tente a próxima! Porém com menos uma vida");
+			jogar();
+		}
+
+		function errado() {
+			alert("Acabou as tentativas, tente novamente!");
+			location.reload();
+		}
+
+		document.pressionar = function(event) {
+			var tecla = event.palavra;
+
+			var selecao = resposta.indexOf(tecla);
+
+			var chute = jogada.indexOf(tecla);
+
+			if (chute === -1) { 
+				jogada.push(tecla);
+
+				document.getElementById("idletra").innerHTML = tecla;
+
+    			if (selecao === -1) { 
+    				erro.push(tecla);
+    				document.getElementById("tentativaid").innerHTML = erro;
+    				tentativas = tentativas-1;
+				}
+
+				else {
+					var classe = document.getElementById("idresposta").getElementsByClassName(tecla);
+					for (var i = 0; i < classe.length; i++) {
+					classe[i].innerHTML = tecla;
+					}
+					acerto.push(tecla);
+				}
+			}	
+
+			if (tentativas == 0) {
+				errado();
+			}
+
+			if (acerto.length == aoduplicar.length) {
+				certo();
+			}
+		}
+}
+
+jogar()
+
+</script>
+
+
+</body>
+</html>
